@@ -27,6 +27,8 @@ src/background.js    service worker: context menus, omnibox, badge alarm, the OA
 src/popup.*          the Quick Add popup
 src/options.*        account, badge source, pointers
 scripts/build.mjs    dist/chrome.zip + dist/firefox.zip (strips the key for the store)
+scripts/store-assets.mjs  the store's screenshots + promo tile, rendered from the real popup → dist/store/
+store/LISTING.md     every field of the Web Store form, and the upload-day order
 test/run.mjs         node test/run.mjs — hint, omnibox text, badge, manifest, api.js refresh single-flight (mock fetch)
 ```
 
