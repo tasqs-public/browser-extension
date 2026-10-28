@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tasqs Quick Add</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<div class="qa" id="app" data-state="loading">
+
+  <header class="qa__head">
+    <div class="qa__brand">
+      <div class="qa__mark" aria-hidden="true">T</div>
+      <div>
+        <div class="qa__title">Quick Add</div>
+        <div class="qa__sub" id="who">tasqs.com</div>
+      </div>
+    </div>
+    <div class="qa__headbtns">
+      <a class="iconbtn" id="openTasqs" href="https://tasqs.com/dashboard.php" target="_blank" rel="noopener" aria-label="Open Tasqs" title="Open Tasqs">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M10 14 21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+      </a>
+      <button type="button" class="iconbtn" id="openOptions" aria-label="Settings" title="Settings">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Signed out -->
+  <section class="qa__signin" id="signin">
+    <p class="qa__lead">Add tasks to Tasqs from any page: this button, <kbd>Alt</kbd><kbd>Shift</kbd><kbd>T</kbd>, or right-click.</p>
+    <button type="button" class="qa__save" id="signinBtn">Sign in to Tasqs</button>
+    <p class="qa__fine">Opens Tasqs' own sign-in. The extension only gets permission to add tasks and read today's counts. <a href="https://tasqs.com/register.php" target="_blank" rel="noopener">No account yet?</a></p>
+    <p class="qa__err" id="signinErr" role="alert"></p>
+  </section>
+
+  <!-- Form -->
+  <form class="qa__body" id="form" autocomplete="off">
+    <div>
+      <label for="text" class="qa__label">Task</label>
+      <textarea id="text" class="qa__text" rows="2" maxlength="1000" placeholder="What needs doing?"></textarea>
+      <div class="qa__chips" id="chips" aria-live="polite"></div>
+      <div class="qa__hint" id="hint">Type naturally: <b>tomorrow 2pm</b> · <b>!high</b> · <b>#tag</b> · <b>@list</b></div>
+    </div>
+
+    <div class="qa__row">
+      <div>
+        <label for="list" class="qa__label">List <span class="qa__label-note" id="listNote"></span></label>
+        <div class="qa__selectwrap">
+          <span class="qa__dot" id="listDot" aria-hidden="true"></span>
+          <select id="list" class="qa__select"></select>
+          <svg class="qa__caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa__page" id="page" hidden>
+      <div class="qa__page-row">
+        <div class="qa__fav" id="fav" aria-hidden="true">W</div>
+        <div class="qa__page-text">
+          <span class="qa__page-title" id="pageTitle"></span>
+          <span class="qa__page-url" id="pageUrl"></span>
+        </div>
+      </div>
+      <label class="qa__check"><input type="checkbox" id="attach" checked><span>Add the page link to the description</span></label>
+      <label class="qa__check" id="selRow" hidden><input type="checkbox" id="useSel" checked>
+        <span class="qa__page-text">Use selected text as description<span class="qa__quote" id="selQuote"></span></span></label>
+    </div>
+
+    <p class="qa__err" id="err" role="alert"></p>
+  </form>
+
+  <footer class="qa__foot" id="foot">
+    <button type="submit" form="form" class="qa__save" id="save">Add to Tasqs <span class="qa__key">⏎</span></button>
+    <div class="qa__shortcut">Open from anywhere with <kbd>Alt</kbd><kbd>Shift</kbd><kbd>T</kbd> <a href="#" id="shortcutLink" title="Change the shortcut">change</a></div>
+  </footer>
+
+  <!-- Saved -->
+  <section class="qa__done" id="done">
+    <div class="qa__tick" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
+    <h2 id="doneTitle">Added</h2>
+    <p class="qa__fine" id="doneNote"></p>
+    <div class="qa__card">
+      <div class="qa__card-title" id="doneTask"></div>
+      <div class="qa__chips qa__chips--static" id="doneChips"></div>
+    </div>
+    <div class="qa__actions">
+      <a class="qa__btn qa__btn--dark" id="openTask" href="#" target="_blank" rel="noopener">Open task</a>
+      <button type="button" class="qa__btn" id="again">Add another</button>
+    </div>
+    <div class="qa__progress"><div id="bar"></div></div>
+    <p class="qa__fine" id="closing"></p>
+  </section>
+
+</div>
+<script type="module" src="popup.js"></script>
+</body>
+</html>

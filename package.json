@@ -1,0 +1,12 @@
+{
+  "name": "tasqs-quick-add",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tasqs Quick Add browser extension",
+  "type": "module",
+  "scripts": {
+    "test": "node test/run.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "license": "MIT"
+}
