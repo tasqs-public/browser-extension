@@ -6,7 +6,7 @@ Chrome, Edge and Brave today (Manifest V3). The code is Firefox-compatible; an A
 
 ## How it works
 
-- **No content script, no `tabs` permission.** The extension reads the current tab's title, URL and selected text only when you invoke it (`activeTab` + a one-shot `scripting` call), and sends them to `tasqs.com` over HTTPS to fill in the task. Nothing is read from pages you don't capture from.
+- **No content script, no `tabs` permission.** The extension reads the current tab's title, URL and selected text only when you invoke it (`activeTab` + a one-shot `scripting` call), and sends those details to `tasqs.com` over HTTPS to fill in the task. Nothing is read from pages you don't capture from.
 - **Sign-in is OAuth 2.1 with PKCE** against Tasqs' own server. The extension is a *public, first-party* client: no secret, and a token that can only **add tasks** (`tasks:capture`) and **read today's counts** (`tasks:summary`). It cannot read, edit or delete your tasks. It shows up in your profile's Connected apps card, where you can revoke it.
 - **Capture never fails because the AI did.** If your monthly AI allowance is used up, the task still saves exactly as typed.
 - Two server endpoints: `POST /v1/capture` and `GET /v1/me/summary` — documented at [tasqs.com/api-documentation.php#quick-add](https://tasqs.com/api-documentation.php#quick-add).
