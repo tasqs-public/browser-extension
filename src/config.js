@@ -8,7 +8,7 @@
 // the extension id, which the manifest "key" pins — do not change the key.
 
 export const BASE_URL   = 'https://tasqs.com';
-export const CLIENT_ID  = 'REPLACE_WITH_CLIENT_ID';   // 32 hex, from the seeder
+export const CLIENT_ID  = '7291a13b99824299fbe971c9bb409e54';   // 32 hex, from the seeder (public identifier)
 export const SCOPES     = 'tasks:capture tasks:summary';
 export const RESOURCE   = 'https://tasqs.com';        // RFC 8707 resource indicator
 export const APP_NAME   = 'Tasqs Quick Add';
