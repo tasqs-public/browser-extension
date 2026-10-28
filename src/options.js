@@ -2,6 +2,8 @@
 // service worker (background.js) so it survives this page losing focus.
 
 import { getAuth } from './auth.js';
+import { badgeSource } from './badge.js';
+import { STORAGE_PREFS } from './config.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -31,4 +33,13 @@ $('signout').addEventListener('click', async () => {
 });
 $('shortcuts').addEventListener('click', (e) => { e.preventDefault(); chrome.tabs.create({ url: 'chrome://extensions/shortcuts' }); });
 $('version').textContent = chrome.runtime.getManifest().version;
+
+// Badge source: merged into the shared prefs object (the popup keeps lastList
+// and attachLink there), then the worker repaints right away.
+badgeSource().then((s) => { $('badge').value = s; });
+$('badge').addEventListener('change', async () => {
+  const { [STORAGE_PREFS]: prefs } = await chrome.storage.local.get(STORAGE_PREFS);
+  await chrome.storage.local.set({ [STORAGE_PREFS]: { ...(prefs || {}), badge: $('badge').value } });
+  chrome.runtime.sendMessage({ type: 'badgeRefresh' }).catch(() => {});
+});
 render();

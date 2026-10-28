@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Tasqs Quick Add",
   "version": "1.0.0",
-  "description": "Add a task to Tasqs from any page. Toolbar button, Alt+Shift+T, or right-click \"Add to Tasqs\". Free on every plan.",
+  "description": "Add a task to Tasqs from any page: toolbar button, Alt+Shift+T, right-click, or type tq in the address bar. Free on every plan.",
   "minimum_chrome_version": "116",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhAsEVR+zYZTi+rrFVvwlTDKSw5jgT/brSOiZyQSATfjt2PDgf8oWywW0SHJiWxWFCZvspm2ArTnC6LQrC4yH2XD3X9OcwPndw92TQAbs2cLRb5U2TwnJ7fikRRrZ31g9Y5PVC0UT1+U+ailBkX4vTEf+rQji8vn82xCXXr31mKrSzIYahE8p8NDuMPJIPG7I3t2Evlzonzie3JKVpNkATB1cspkTo09o/XN/PCaFWW8BaJ0zR/AzrseuAOm0Q2Xwu6fZn50Me8DNikUHRhVl5CdhxG/bpv1dQR145k85zq/P1xMAy2tg+9ZABOxTuEKhY8GTOdfu0adGBzkNz08gWQIDAQAB",
   "icons": {
@@ -27,12 +27,17 @@
     "page": "src/options.html",
     "open_in_tab": true
   },
+  "omnibox": {
+    "keyword": "tq"
+  },
   "permissions": [
     "activeTab",
     "scripting",
     "contextMenus",
     "storage",
-    "identity"
+    "identity",
+    "alarms",
+    "omnibox"
   ],
   "host_permissions": [
     "https://tasqs.com/*"

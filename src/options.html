@@ -16,6 +16,8 @@
   .opt .btn--yellow { background: var(--yellow); color: #111318; border-color: var(--yellow); }
   .opt code { font-size: 12px; background: var(--surface); padding: 2px 6px; border-radius: 5px; }
   .opt .status { font-weight: 700; }
+  .opt label { font-size: 13px; font-weight: 600; }
+  .opt select.btn { cursor: pointer; }
   .opt .ok { color: var(--green); }
 </style>
 </head>
@@ -39,12 +41,26 @@
     <p><strong>Toolbar button</strong> — click the Tasqs icon on any page; the page's title and link come along.</p>
     <p><strong>Keyboard</strong> — <kbd>Alt</kbd><kbd>Shift</kbd><kbd>T</kbd> opens Quick Add while Chrome has focus. <a href="#" id="shortcuts">Change the shortcut</a> (you can also make it global with <kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>1</kbd>–<kbd>9</kbd>).</p>
     <p><strong>Right-click</strong> — "Add to Tasqs" on selected text, a link, or the page.</p>
+    <p><strong>Address bar</strong> — type <code>tq</code>, a space, then the task, and press Enter. It saves straight away (no popup); the suggestion row shows what Tasqs will understand as you type, and a green ✓ on the toolbar icon confirms the save. The page you are on is not attached.</p>
     <p><strong>Type naturally</strong> — <code>call dentist tomorrow 2pm #errands @Personal !high</code> becomes a task with a date, tag, list and priority.</p>
   </section>
 
   <section>
+    <h2>Badge</h2>
+    <div class="row">
+      <label for="badge">Number on the toolbar icon</label>
+      <select id="badge" class="btn">
+        <option value="due_today">Tasks due today</option>
+        <option value="shortlist">Shortlist items left today</option>
+        <option value="off">Off</option>
+      </select>
+    </div>
+    <p>Refreshes every 15 minutes and whenever you add a task. Nothing is shown when the count is zero or you are signed out.</p>
+  </section>
+
+  <section>
     <h2>Privacy</h2>
-    <p>Nothing is read from a page until you invoke Quick Add on it, and then only that page's title, address and selected text, sent to tasqs.com over HTTPS to fill in your task. No browsing history, no analytics. <a href="https://tasqs.com/privacy.php" target="_blank" rel="noopener">Privacy policy</a></p>
+    <p>Nothing is read from a page until you invoke Quick Add on it, and then only that page's title, address and selected text, sent to tasqs.com over HTTPS to fill in your task. The badge asks tasqs.com for your counts every 15 minutes (turn it off above to stop that). No browsing history, no analytics. <a href="https://tasqs.com/privacy.php" target="_blank" rel="noopener">Privacy policy</a></p>
   </section>
 
   <p class="qa__fine">Version <span id="version"></span> · <a href="https://github.com/tasqs-public/browser-extension" target="_blank" rel="noopener">Source</a> · <a href="https://tasqs.com/guide.php#browser-extension" target="_blank" rel="noopener">Guide</a></p>

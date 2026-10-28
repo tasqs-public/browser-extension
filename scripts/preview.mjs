@@ -27,6 +27,7 @@ const stub = `
     scripting: { executeScript: async () => [{ result: 'Team plan: $12 per user per month, billed annually.' }] },
     runtime: { sendMessage: async () => ({ ok: true }), openOptionsPage: () => {}, getManifest: () => ({ version: '1.0.0' }) },
     identity: { getRedirectURL: () => 'https://abc.chromiumapp.org/' },
+    action: { setBadgeText: async () => {}, setBadgeBackgroundColor: async () => {}, setBadgeTextColor: async () => {}, setTitle: async () => {} },
   };
   const realFetch = window.fetch;
   window.fetch = async (url, opts) => {
@@ -71,6 +72,13 @@ await page2.goto(base + '/src/popup.html');
 await page2.waitForFunction(() => document.getElementById('app').dataset.state === 'signedout');
 await page2.screenshot({ path: resolve(root, 'dist/preview/0-signedout.png') });
 
+// Options page (badge section).
+const page3 = await browser.newPage({ viewport: { width: 600, height: 1000 }, deviceScaleFactor: 2 });
+await page3.addInitScript(stub);
+await page3.goto(base + '/src/options.html');
+await page3.waitForFunction(() => document.getElementById('status').textContent === 'Signed in');
+await page3.screenshot({ path: resolve(root, 'dist/preview/4-options.png'), fullPage: true });
+
 await browser.close();
 server.close();
-console.log('dist/preview/{0-signedout,1-opened,2-typed,3-saved}.png');
+console.log('dist/preview/{0-signedout,1-opened,2-typed,3-saved,4-options}.png');

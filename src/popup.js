@@ -37,7 +37,10 @@ async function readContext() {
   const { pending } = await chrome.storage.session.get('pending');
   if (pending && Date.now() - pending.at < 60_000) {
     await chrome.storage.session.remove('pending');
-    return { title: pending.page_title || '', url: pending.url || '', selection: pending.selection || '', text: pending.text || '', fromMenu: true };
+    return {
+      title: pending.page_title || '', url: pending.url || '', selection: pending.selection || '', text: pending.text || '', fromMenu: true,
+      error: pending.error || '', upgrade: !!pending.upgrade, code: pending.code || '',   // an omnibox save that failed: show why, keep the text
+    };
   }
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -117,16 +120,22 @@ async function save(e) {
   };
   try {
     const r = await capture(input);
-    await chrome.storage.local.set({ [STORAGE_PREFS]: { lastList: els.list.value || '', attachLink: els.attach.checked } });
+    const { [STORAGE_PREFS]: prefs } = await chrome.storage.local.get(STORAGE_PREFS);   // merge: the badge pref lives here too
+    await chrome.storage.local.set({ [STORAGE_PREFS]: { ...(prefs || {}), lastList: els.list.value || '', attachLink: els.attach.checked } });
+    chrome.runtime.sendMessage({ type: 'badgeRefresh' }).catch(() => {});   // a task due today changes the count
     showDone(r);
   } catch (err) {
     els.save.disabled = false; paintListDot();
     if (err instanceof ApiError && err.code === 'signed_out') { setState('signedout'); return; }
-    let msg = esc(err.message || 'Something went wrong. Try again.');
-    if (err instanceof ApiError && err.upgrade) msg += ` <a href="${BASE_URL}/pricing.php" target="_blank" rel="noopener">See plans</a>`;
-    if (err instanceof ApiError && err.code === 'rate_limited') msg = 'You have added 60 tasks in the last hour. Give it a little while.';
-    showErr(els.err, msg, true);
+    showErr(els.err, errorMarkup(err.message, err instanceof ApiError ? err : {}), true);
   }
+}
+
+function errorMarkup(message, { upgrade = false, code = '' } = {}) {
+  if (code === 'rate_limited') return 'You have added 60 tasks in the last hour. Give it a little while.';
+  let msg = esc(message || 'Something went wrong. Try again.');
+  if (upgrade) msg += ` <a href="${BASE_URL}/pricing.php" target="_blank" rel="noopener">See plans</a>`;
+  return msg;
 }
 
 function showDone(r) {
@@ -201,6 +210,7 @@ async function boot() {
   // Pre-fill: a right-click capture's text, else the page title (editable).
   els.text.value = ctx.text || ctx.title || '';
   setState('form');
+  if (ctx.error) showErr(els.err, errorMarkup(ctx.error, { upgrade: ctx.upgrade, code: ctx.code }), true);   // from a failed `tq` save
   await fillLists();
   renderChips();
   els.text.focus();

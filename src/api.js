@@ -11,6 +11,7 @@
 
 import { BASE_URL, STORAGE_LISTS, LISTS_TTL_MS } from './config.js';
 import { accessToken, refresh, setUser } from './auth.js';
+import { paintBadge } from './badge.js';
 
 export class ApiError extends Error {
   constructor(status, code, message, extra = {}) {
@@ -54,11 +55,12 @@ export function capture(input) {
   return request('POST', 'capture', input);
 }
 
-/** {date, due_today, overdue, shortlist_remaining, lists:[{id,name,color}]} */
+/** {date, due_today, overdue, shortlist_remaining, lists:[{id,name,color}]} — and repaints the badge. */
 export async function summary() {
   const s = await request('GET', 'me/summary');
   await chrome.storage.local.set({ [STORAGE_LISTS]: { at: Date.now(), lists: s.lists || [] } });
   if (s.user) await setUser(s.user);   // {name} — shown in the popup header
+  await paintBadge(s);                 // the one place the badge learns a number
   return s;
 }
 
