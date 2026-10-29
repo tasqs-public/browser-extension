@@ -229,10 +229,19 @@ await page.screenshot({ path: resolve(out, '5-badge.png') });
 
 // Promo tile 440x280
 const tile = await browser.newPage({ viewport: { width: 440, height: 280 }, deviceScaleFactor: 1 });
-await tile.setContent(`<!doctype html><html><body style="margin:0;width:440px;height:280px;background:#111318;font-family:${FONT};color:#fff;display:flex;flex-direction:column;justify-content:center;padding:0 40px;box-sizing:border-box">
-  <div style="display:flex;align-items:center;gap:14px"><div style="width:52px;height:52px;border-radius:14px;background:#FFD60A;color:#111318;font-weight:800;font-size:30px;display:flex;align-items:center;justify-content:center">T</div><div style="font-size:28px;font-weight:800;letter-spacing:-.6px">Tasqs Quick Add</div></div>
-  <div style="margin-top:22px;font-size:17px;line-height:1.45;color:#C9CDD8">Add a task from any page.<br>Toolbar button · Alt+Shift+T · right-click · <span style="font-family:ui-monospace,Menlo,monospace;background:#1F2330;padding:1px 7px;border-radius:5px;color:#FFD60A">tq</span> in the address bar.</div>
-  <div style="margin-top:22px;font-size:13px;color:#7A8194">Free on every plan · tasqs.com</div>
+await tile.setContent(`<!doctype html><html><head><meta charset="utf-8"><style>
+  * { box-sizing: border-box; } html, body { margin: 0; }
+  body { width: 440px; height: 280px; background: #111318; font-family: ${FONT}; color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 0 36px; }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .mark { width: 52px; height: 52px; border-radius: 14px; background: #FFD60A; color: #111318; font-weight: 800; font-size: 30px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .name { font-size: 27px; font-weight: 800; letter-spacing: -.6px; }
+  .tag { margin-top: 20px; font-size: 16px; line-height: 1.5; color: #C9CDD8; }
+  .tag code { font-family: ui-monospace, Menlo, Consolas, monospace; background: #1F2330; padding: 1px 7px; border-radius: 5px; color: #FFD60A; font-size: 15px; }
+  .fine { margin-top: 18px; font-size: 13px; color: #7A8194; }
+</style></head><body>
+  <div class="brand"><div class="mark">T</div><div class="name">Tasqs Quick Add</div></div>
+  <div class="tag">Add a task from any page.<br>Toolbar button · Alt+Shift+T · right-click · <code>tq</code> in the address bar.</div>
+  <div class="fine">Free on every plan · tasqs.com</div>
 </body></html>`);
 await tile.screenshot({ path: resolve(out, 'tile-440x280.png') });
 
